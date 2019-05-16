@@ -8,10 +8,14 @@ package container;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import util.searchable.ISearchFilter;
+import util.searchable.ISearchableByFilter;
 
-public class Container<E> implements ISearchFilter, Collection<E> {
+public class Container<E> implements ISearchableByFilter<E>, Collection<E> {
 
 	private IContainerElement<E> firstElement;
 	
@@ -30,16 +34,18 @@ public class Container<E> implements ISearchFilter, Collection<E> {
 	@Override
 	public boolean add(E arg0) {
 		// TODO Auto-generated method stub
-		if (arg0 == null) throw new NullPointerException("Argument is 'null'!");
+		if (arg0 == null) throw new NullPointerException("[add] Passed argument is 'null'!");
+		IContainerElement<E> toBeAdded = new ContainerElement<E>(arg0);
+		if (this.contains(toBeAdded)) return false;
 		if (this.firstElement == null) {
-			this.firstElement = (IContainerElement<E>) new ContainerElement<E>(arg0);
+			this.firstElement = toBeAdded;
 			return true;
 		}
 		IContainerElement<E> last = this.firstElement;
 		while (last.hasNextElement()) {
 			last = last.getNextElement();
 		}
-		last.setNextElement((IContainerElement<E>) new ContainerElement<E>(arg0));
+		last.setNextElement(toBeAdded);
 		return true;
 	}
 
@@ -49,7 +55,10 @@ public class Container<E> implements ISearchFilter, Collection<E> {
 	@Override
 	public boolean addAll(Collection<? extends E> arg0) {
 		// TODO Auto-generated method stub
-		return false;
+		if (arg0 == null) throw new NullPointerException("[addAll] Passed argument is 'null'!");
+		List<Boolean> l = arg0.stream().map(el -> this.add(el)).collect(Collectors.toList());
+		if (l.contains(false)) return false;
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -58,7 +67,7 @@ public class Container<E> implements ISearchFilter, Collection<E> {
 	@Override
 	public void clear() {
 		// TODO Auto-generated method stub
-
+		this.firstElement = null;
 	}
 
 	/* (non-Javadoc)
@@ -67,6 +76,15 @@ public class Container<E> implements ISearchFilter, Collection<E> {
 	@Override
 	public boolean contains(Object arg0) {
 		// TODO Auto-generated method stub
+		if (arg0 == null) throw new NullPointerException("[contains] Passed argument is 'null'!");
+		if (!(arg0 instanceof IContainerElement<?>)) return false;
+		IContainerElement<E> check = (IContainerElement<E>) arg0;
+		IContainerElement<E> last = this.firstElement;
+		if (last.equals(check)) return true;
+		while (last.hasNextElement()) {
+			last = last.getNextElement();
+			if (last.equals(check)) return true;
+		}
 		return false;
 	}
 
@@ -76,16 +94,29 @@ public class Container<E> implements ISearchFilter, Collection<E> {
 	@Override
 	public boolean containsAll(Collection<?> arg0) {
 		// TODO Auto-generated method stub
-		return false;
+		if (arg0 == null) throw new NullPointerException("[containsAll] Passed argument is 'null'!");
+		List<Boolean> l = arg0.stream().map(el -> this.contains(el)).collect(Collectors.toList());
+		if (l.contains(false)) return false;
+		return true;
 	}
 
+	public E get(int index) throws IndexOutOfBoundsException {
+		if (index < 0 || index > this.size()) throw new IndexOutOfBoundsException("[get] Index not in range between 0 and " + this.size());
+		IContainerElement<E> toGet = this.firstElement;
+		for (int i = 0; i < index; ++i) {
+			if (!toGet.hasNextElement()) throw new NullPointerException("[get] element at index '" + i + "' has no next element");
+			toGet = toGet.getNextElement();
+		}
+		return toGet.getData();
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.util.Collection#isEmpty()
 	 */
 	@Override
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
-		return false;
+		return this.firstElement == null;
 	}
 
 	/* (non-Javadoc)
@@ -94,7 +125,7 @@ public class Container<E> implements ISearchFilter, Collection<E> {
 	@Override
 	public Iterator<E> iterator() {
 		// TODO Auto-generated method stub
-		return null;
+		return (Iterator<E>) new Itr<E>(this.firstElement);
 	}
 
 	/* (non-Javadoc)
@@ -103,6 +134,32 @@ public class Container<E> implements ISearchFilter, Collection<E> {
 	@Override
 	public boolean remove(Object arg0) {
 		// TODO Auto-generated method stub
+		if (arg0 == null) throw new NullPointerException("[remove] Passed argument is 'null'!");
+		if (!(arg0 instanceof IContainerElement<?>)) return false;
+		IContainerElement<E> check = (IContainerElement<E>) arg0;
+		if (!this.contains(check)) return false;
+		IContainerElement<E> last = this.firstElement;
+		if (last.equals(check)) {
+			this.firstElement = last.getNextElement();
+			return true;
+		}
+		while (last.hasNextElement()) {
+			// if the current element has a next element, it is not the last one
+			
+			// copy the next element on a temporary var
+			IContainerElement<E> tmp = last.getNextElement();
+			// check if the temporary (the next one) equals the to-be-checked-one
+			if (tmp.equals(check)) {
+				// if so, set the reference to the next element of the current one to the next element of the temporary (next one) 
+				// so it gets skipped
+				last.setNextElement(tmp.getNextElement());
+				// and return true since the list shall not be altered any more
+				return true;
+			}
+			// this happens if the temporary next el is not equal
+			// in this case set the current element to the next
+			last = tmp;
+		}
 		return false;
 	}
 
@@ -112,6 +169,9 @@ public class Container<E> implements ISearchFilter, Collection<E> {
 	@Override
 	public boolean removeAll(Collection<?> arg0) {
 		// TODO Auto-generated method stub
+		if (arg0 == null) throw new NullPointerException("[removeAll] Passed argument is 'null'!");
+		List<Boolean> l = arg0.stream().map(el -> this.remove(el)).collect(Collectors.toList());
+		if (l.contains(true)) return true;
 		return false;
 	}
 
@@ -121,7 +181,7 @@ public class Container<E> implements ISearchFilter, Collection<E> {
 	@Override
 	public boolean retainAll(Collection<?> arg0) {
 		// TODO Auto-generated method stub
-		return false;
+		throw new UnsupportedOperationException("[retainAll] this method is not supported!");
 	}
 
 	/* (non-Javadoc)
@@ -130,7 +190,15 @@ public class Container<E> implements ISearchFilter, Collection<E> {
 	@Override
 	public int size() {
 		// TODO Auto-generated method stub
-		return 0;
+		int i = 1;
+		if (this.firstElement == null) return 0;
+		IContainerElement<E> last = this.firstElement;
+		while (last.hasNextElement()) {
+			if (i == Integer.MAX_VALUE) return Integer.MAX_VALUE;
+			++i;
+			last = last.getNextElement();
+		}
+		return i;
 	}
 
 	/* (non-Javadoc)
@@ -139,7 +207,7 @@ public class Container<E> implements ISearchFilter, Collection<E> {
 	@Override
 	public Object[] toArray() {
 		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("[Object[] toArray] this method is not supported!");
 	}
 
 	/* (non-Javadoc)
@@ -148,16 +216,7 @@ public class Container<E> implements ISearchFilter, Collection<E> {
 	@Override
 	public <T> T[] toArray(T[] arg0) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see util.searchable.ISearchFilter#searchFilterFunction(java.lang.Object, java.lang.Object)
-	 */
-	@Override
-	public boolean searchFilterFunction(Object originalObject, Object compareObject) {
-		// TODO Auto-generated method stub
-		return false;
+		throw new UnsupportedOperationException("[<T> T[] toArray] this method is not supported!");
 	}
 
 	/* (non-Javadoc)
@@ -166,6 +225,28 @@ public class Container<E> implements ISearchFilter, Collection<E> {
 	@Override
 	public String toString() {
 		return "Container [firstElement=" + firstElement + "]";
+	}
+
+	@Override
+	public Collection<E> searchByFilter(ISearchFilter filter, Object compareObject) {
+		// TODO Auto-generated method stub
+		if (filter == null) throw new NullPointerException("[searchByFilter] filter is 'null'!");
+		if (compareObject == null) throw new NullPointerException("[searchByFilter] compareObject is 'null'!");
+		if (!(compareObject instanceof IContainerElement<?>)) return null;
+		IContainerElement<E> compObj = (IContainerElement<E>) compareObject;
+		Container<E> retCont = new Container<E>();
+		if (this.firstElement == null) return retCont;
+		IContainerElement<E> last = this.firstElement;
+		if (filter.searchFilterFunction(last, compareObject)) {
+			retCont.add(last.getData());
+		}
+		while (last.hasNextElement()) {
+			last = last.getNextElement();
+			if (filter.searchFilterFunction(last, compareObject)) {
+				retCont.add(last.getData());
+			}
+		}
+		return retCont;
 	}
 
 }

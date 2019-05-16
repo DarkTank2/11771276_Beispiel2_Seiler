@@ -6,20 +6,24 @@
  */
 package util;
 
-public enum ProductCategory extends Enum<ProductCategory> {
+public enum ProductCategory {
 	
-	public static final ProductCategory FOOD;
-	public static final ProductCategory BEVERAGE;
-	public static final ProductCategory DEFAULT;
+	FOOD,
+	BEVERAGE,
+	DEFAULT;
 	
-	private String label;
+	private final String label;
 
+	private ProductCategory() {
+		this.label = null;
+	}
+	
 	/**
 	 * Constructor for class ProductCategory.java
 	 * @author Alexander Seiler, 11771276
 	 * @param label
 	 */
-	private ProductCategory(String label) {
+	ProductCategory(String label) {
 		this.label = label;
 	}
 
@@ -31,7 +35,7 @@ public enum ProductCategory extends Enum<ProductCategory> {
 	 * @return the label
 	 */
 	public String getLabel() {
-		return label;
+		return this.label;
 	}
 	
 	
