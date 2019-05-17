@@ -6,7 +6,7 @@
  */
 package rbvs.product;
 
-import ict.basics.IDeepCopy;
+import rbvs.copy.IDeepCopy;
 
 public interface IProduct extends IDeepCopy {
 

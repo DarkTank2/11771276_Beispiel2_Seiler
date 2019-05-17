@@ -66,6 +66,7 @@ public class GenericTree<TREETYPE> implements ITree<TREETYPE> {
 	@Override
 	public ITreeNode<TREETYPE> findNode(TREETYPE searchValue) {
 		// TODO Auto-generated method stub
+//		invoke the search for the root-element
 		return this.root.findNodeByValue(searchValue);
 	}
 
@@ -75,6 +76,7 @@ public class GenericTree<TREETYPE> implements ITree<TREETYPE> {
 	@Override
 	public ITreeNode<TREETYPE> findNode(ITreeNode<TREETYPE> searchNode) {
 		// TODO Auto-generated method stub
+//		invoke the search for the root-element
 		return this.root.findNodeByNode(searchNode);
 	}
 

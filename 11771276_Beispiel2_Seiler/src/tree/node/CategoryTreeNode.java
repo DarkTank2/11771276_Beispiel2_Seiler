@@ -18,7 +18,7 @@ public class CategoryTreeNode<NODETYPE, CATEGORY> extends GenericTreeNode<NODETY
 	 * @param category
 	 */
 	public CategoryTreeNode(CATEGORY category) {
-		super(null, category.toString());
+		super(null, category == null ? "" : category.toString());
 		this.category = category;
 	}
 	

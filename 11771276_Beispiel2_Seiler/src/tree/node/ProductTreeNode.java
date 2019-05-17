@@ -38,9 +38,10 @@ public class ProductTreeNode extends GenericTreeNode<IProduct> {
 	}
 	
 	public ProductTreeNode deepCopy() {
-		ProductTreeNode retNode = new ProductTreeNode((IProduct) this.nodeValue().deepCopy(), this.getLabel());
+		ProductTreeNode retNode = new ProductTreeNode(this.nodeValue() == null ? null : (IProduct) this.nodeValue().deepCopy(), this.getLabel());
 		Collection<ITreeNode<IProduct>> l = retNode.getChildren();
-//		clear the list of the newly generated product since it might happen that a value is a composite product then the list will be initialized with the references of the to-be-copied product
+//		clear the list of the newly generated product since it might happen that a value is a composite product 
+//		then the list will be initialized with the references of the to-be-copied product and not with copies
 		l.clear();
 		this.getChildren().stream().forEach(el -> l.add(el.deepCopy()));
 		return retNode;

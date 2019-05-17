@@ -37,9 +37,10 @@ public class Itr<E> implements Iterator<E> {
 	@Override
 	public E next() {
 		// TODO Auto-generated method stub
-		// idea is that if i call itr.next() i get the current element but set the next element
+		// idea is that if i call itr.next() I get the current element but set the next element
 		// so i can iterate over all elements
 		if (this.next == null) {
+//			error case, the iterator has no next element
 			return null;
 		}
 		E tmp = this.next.getData();
@@ -48,6 +49,12 @@ public class Itr<E> implements Iterator<E> {
 	}
 	
 	public void remove() {
+		try {
+			throw new UnsupportedOperationException("[remove] this method is not supported");
+		} catch (UnsupportedOperationException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 		
 	}
 

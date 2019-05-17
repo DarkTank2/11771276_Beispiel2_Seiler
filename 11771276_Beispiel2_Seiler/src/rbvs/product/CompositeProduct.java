@@ -47,7 +47,7 @@ public class CompositeProduct extends Product {
 //		adding each item from the passed list to this' list via streams
 		products
 			.stream()
-			.forEach(prod -> this.containedProducts.add(prod));
+			.forEach(prod -> this.containedProducts.add(prod.deepCopy()));
 		// TODO Auto-generated constructor stub
 	}
 
@@ -79,6 +79,7 @@ public class CompositeProduct extends Product {
 	 * @return removal of product
 	 */
 	public boolean removeProduct(Product product) {
+		if (product == null) return false;
 		this.logger.info("[function] removeProduct() " + product.getName() + " from " + this.getName());
 //		List.remove(Object) works with Object.equals(Object) (see java-docs for this)
 		return this.containedProducts.remove(product);

@@ -25,7 +25,7 @@ public class Container<E> implements ISearchableByFilter<E>, Collection<E> {
 	 */
 	public Container() {
 		// TODO Auto-generated constructor stub
-		firstElement = null;
+		this.firstElement = null;
 	}
 
 	/* (non-Javadoc)
@@ -57,8 +57,8 @@ public class Container<E> implements ISearchableByFilter<E>, Collection<E> {
 		// TODO Auto-generated method stub
 		if (arg0 == null) throw new NullPointerException("[addAll] Passed argument is 'null'!");
 		List<Boolean> l = arg0.stream().map(el -> this.add(el)).collect(Collectors.toList());
-		if (l.contains(false)) return false;
-		return true;
+		if (l.contains(true)) return true;
+		return false;
 	}
 
 	/* (non-Javadoc)
@@ -76,8 +76,9 @@ public class Container<E> implements ISearchableByFilter<E>, Collection<E> {
 	@Override
 	public boolean contains(Object arg0) {
 		// TODO Auto-generated method stub
-		if (arg0 == null) throw new NullPointerException("[contains] Passed argument is 'null'!");
+//		if (arg0 == null) throw new NullPointerException("[contains] Passed argument is 'null'!");
 		if (!(arg0 instanceof IContainerElement<?>)) return false;
+		if (this.firstElement == null) return false;
 		IContainerElement<E> check = (IContainerElement<E>) arg0;
 		IContainerElement<E> last = this.firstElement;
 		if (last.equals(check)) return true;
@@ -94,7 +95,7 @@ public class Container<E> implements ISearchableByFilter<E>, Collection<E> {
 	@Override
 	public boolean containsAll(Collection<?> arg0) {
 		// TODO Auto-generated method stub
-		if (arg0 == null) throw new NullPointerException("[containsAll] Passed argument is 'null'!");
+//		if (arg0 == null) throw new NullPointerException("[containsAll] Passed argument is 'null'!");
 		List<Boolean> l = arg0.stream().map(el -> this.contains(el)).collect(Collectors.toList());
 		if (l.contains(false)) return false;
 		return true;
@@ -102,8 +103,10 @@ public class Container<E> implements ISearchableByFilter<E>, Collection<E> {
 
 	public E get(int index) throws IndexOutOfBoundsException {
 		if (index < 0 || index > this.size()) throw new IndexOutOfBoundsException("[get] Index not in range between 0 and " + this.size());
+		if (this.firstElement == null) return null;
 		IContainerElement<E> toGet = this.firstElement;
 		for (int i = 0; i < index; ++i) {
+//			if the current element has no next element, although the size implicates that it shall have one
 			if (!toGet.hasNextElement()) throw new NullPointerException("[get] element at index '" + i + "' has no next element");
 			toGet = toGet.getNextElement();
 		}
@@ -125,7 +128,7 @@ public class Container<E> implements ISearchableByFilter<E>, Collection<E> {
 	@Override
 	public Iterator<E> iterator() {
 		// TODO Auto-generated method stub
-		return (Iterator<E>) new Itr<E>(this.firstElement);
+		return new Itr<E>(this.firstElement);
 	}
 
 	/* (non-Javadoc)
@@ -134,7 +137,7 @@ public class Container<E> implements ISearchableByFilter<E>, Collection<E> {
 	@Override
 	public boolean remove(Object arg0) {
 		// TODO Auto-generated method stub
-		if (arg0 == null) throw new NullPointerException("[remove] Passed argument is 'null'!");
+//		if (arg0 == null) throw new NullPointerException("[remove] Passed argument is 'null'!");
 		if (!(arg0 instanceof IContainerElement<?>)) return false;
 		IContainerElement<E> check = (IContainerElement<E>) arg0;
 		if (!this.contains(check)) return false;
@@ -169,7 +172,8 @@ public class Container<E> implements ISearchableByFilter<E>, Collection<E> {
 	@Override
 	public boolean removeAll(Collection<?> arg0) {
 		// TODO Auto-generated method stub
-		if (arg0 == null) throw new NullPointerException("[removeAll] Passed argument is 'null'!");
+//		if (arg0 == null) throw new NullPointerException("[removeAll] Passed argument is 'null'!");
+		if (arg0 == null) return false;
 		List<Boolean> l = arg0.stream().map(el -> this.remove(el)).collect(Collectors.toList());
 		if (l.contains(true)) return true;
 		return false;
@@ -181,7 +185,14 @@ public class Container<E> implements ISearchableByFilter<E>, Collection<E> {
 	@Override
 	public boolean retainAll(Collection<?> arg0) {
 		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("[retainAll] this method is not supported!");
+//		throw new UnsupportedOperationException("[retainAll] this method is not supported!");
+		try {
+			throw new UnsupportedOperationException("[retainAll] this method is not supported!"); 
+		} catch (UnsupportedOperationException e) {
+			System.out.println(e.getMessage());
+			System.out.println(e.getStackTrace());
+			return false;
+		}
 	}
 
 	/* (non-Javadoc)
@@ -207,7 +218,14 @@ public class Container<E> implements ISearchableByFilter<E>, Collection<E> {
 	@Override
 	public Object[] toArray() {
 		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("[Object[] toArray] this method is not supported!");
+//		throw new UnsupportedOperationException("[Object[] toArray] this method is not supported!");
+		try {
+			throw new UnsupportedOperationException("[Object[] toArray] this method is not supported!"); 
+		} catch (UnsupportedOperationException e) {
+			System.out.println(e.getMessage());
+			System.out.println(e.getStackTrace());
+			return null;
+		}
 	}
 
 	/* (non-Javadoc)
@@ -216,7 +234,14 @@ public class Container<E> implements ISearchableByFilter<E>, Collection<E> {
 	@Override
 	public <T> T[] toArray(T[] arg0) {
 		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("[<T> T[] toArray] this method is not supported!");
+//		throw new UnsupportedOperationException("[<T> T[] toArray] this method is not supported!");
+		try {
+			throw new UnsupportedOperationException("[<T> T[] toArray] this method is not supported!"); 
+		} catch (UnsupportedOperationException e) {
+			System.out.println(e.getMessage());
+			System.out.println(e.getStackTrace());
+			return null;
+		}
 	}
 
 	/* (non-Javadoc)
@@ -224,14 +249,18 @@ public class Container<E> implements ISearchableByFilter<E>, Collection<E> {
 	 */
 	@Override
 	public String toString() {
-		return "Container [firstElement=" + firstElement + "]";
+		if (this.firstElement == null) {
+			return "Container [firstElement=null]";
+		}
+		return "Container [firstElement=" + this.firstElement.toString() + "]";
 	}
 
 	@Override
 	public Collection<E> searchByFilter(ISearchFilter filter, Object compareObject) {
 		// TODO Auto-generated method stub
-		if (filter == null) throw new NullPointerException("[searchByFilter] filter is 'null'!");
-		if (compareObject == null) throw new NullPointerException("[searchByFilter] compareObject is 'null'!");
+//		if (filter == null) throw new NullPointerException("[searchByFilter] filter is 'null'!");
+//		if (compareObject == null) throw new NullPointerException("[searchByFilter] compareObject is 'null'!");
+		if (filter == null) return null;
 		if (!(compareObject instanceof IContainerElement<?>)) return null;
 		IContainerElement<E> compObj = (IContainerElement<E>) compareObject;
 		Container<E> retCont = new Container<E>();

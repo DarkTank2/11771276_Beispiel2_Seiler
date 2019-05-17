@@ -18,7 +18,7 @@ public class ExtendedProduct extends SimpleProduct {
 	public ExtendedProduct(ExtendedProduct product) {
 //		creating a mere copy of the passed ExProduct
 		super(product.getName(), product.getPrice());
-		this.savedState = product.savedState;
+		this.savedState = product.savedState == null ? null : product.savedState.deepCopy();
 	}
 
 	/**

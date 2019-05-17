@@ -37,7 +37,20 @@ public class GenericTreeNode<NODETYPE> implements ITreeNode<NODETYPE> {
 	@Override
 	public Collection<ITreeNode<NODETYPE>> searchByFilter(ISearchFilter filter, Object compareObject) {
 		// TODO Auto-generated method stub
-		return null;
+		if (filter == null) return null;
+		if (!(compareObject instanceof ITreeNode<?>)) return null;
+//		create new collection
+		Collection<ITreeNode<NODETYPE>> retVal = new Vector<ITreeNode<NODETYPE>>();
+//		add this if it compares successful against the compareObject
+		if (filter.searchFilterFunction(this, compareObject)) retVal.add(this);
+		if (this.children == null) return retVal;
+//		repeat for each child, add the collection from each child to the collection
+		this.children.stream().forEach(el -> {
+			retVal.addAll(((GenericTreeNode<NODETYPE>) el).searchByFilter(filter, compareObject));
+		});
+//		some childs may return null, so filter them out
+		retVal.parallelStream().filter(el -> el != null);
+		return retVal;
 	}
 
 	/* (non-Javadoc)
@@ -82,6 +95,7 @@ public class GenericTreeNode<NODETYPE> implements ITreeNode<NODETYPE> {
 	@Override
 	public ITreeNode<NODETYPE> findNodeByValue(NODETYPE searchValue) {
 		// TODO Auto-generated method stub
+		if (this.nodeValue == null || searchValue == null) return null;
 //		if this node already equals the given value return it
 		if (this.nodeValue.equals(searchValue)) return this;
 //		map each children to one node that equals the given value by recursively invoking the method on each child
@@ -118,6 +132,7 @@ public class GenericTreeNode<NODETYPE> implements ITreeNode<NODETYPE> {
 	@Override
 	public boolean checkNodeByValue(NODETYPE value) {
 		// TODO Auto-generated method stub
+		if (value == null) return false;
 		return this.nodeValue.equals(value);
 	}
 
@@ -134,7 +149,7 @@ public class GenericTreeNode<NODETYPE> implements ITreeNode<NODETYPE> {
 		retval += this.children
 				.stream()
 				.map(el -> el.generateConsoleView(spacer + "  ", preamble))
-				.collect(Collectors.joining("\n"));
+				.collect(Collectors.joining(""));
 		return retval;
 	}
 
@@ -146,7 +161,7 @@ public class GenericTreeNode<NODETYPE> implements ITreeNode<NODETYPE> {
 		// TODO Auto-generated method stub
 		ITreeNode<NODETYPE> retNode = new GenericTreeNode<NODETYPE>(this.nodeValue, this.label);
 		Collection<ITreeNode<NODETYPE>> l = retNode.getChildren();
-		this.children.parallelStream().forEach(el -> l.add(el.deepCopy()));
+		this.children.stream().forEach(el -> l.add(el.deepCopy()));
 		return retNode;
 	}
 
@@ -155,7 +170,7 @@ public class GenericTreeNode<NODETYPE> implements ITreeNode<NODETYPE> {
 	 */
 	@Override
 	public String toString() {
-		return "GenericTreeNode [nodeValue=" + nodeValue + ", label=" + label + "]";
+		return "GenericTreeNode [nodeValue=" + this.nodeValue + ", label=" + this.label + "]";
 	}
 
 }

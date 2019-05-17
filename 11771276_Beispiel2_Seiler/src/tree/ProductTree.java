@@ -15,7 +15,7 @@ public class ProductTree extends GenericTree<IProduct> {
 	public ProductTree(ITreeNode<IProduct> root) {
 		super(root);
 	}
-	public ProductTree(IProduct product) {
+	public ProductTree (IProduct product) {
 		super(new ProductTreeNode(product));
 	}
 	public ProductTree() {
