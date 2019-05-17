@@ -55,4 +55,14 @@ public class ContainerElement<E> implements IContainerElement<E> {
 		return this.data;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "ContainerElement [data=" + this.data + ", nextElement=" + (this.nextElement == null ? "null" : this.nextElement.toString()) + "]";
+	}
+	
+	
+
 }

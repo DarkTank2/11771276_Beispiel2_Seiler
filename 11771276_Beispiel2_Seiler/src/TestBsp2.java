@@ -29,6 +29,8 @@ import tree.node.ProductTreeNode;
 import util.ProductCategory;
 import util.searchable.ProductPriceLessFilter;
 import util.searchable.TextSearchIgnoreCaseFilter;
+import utils.Logger;
+import utils.Loglevel;
 
 /**
  * The examples in this class should not yield any compile time errors. However,
@@ -39,9 +41,24 @@ import util.searchable.TextSearchIgnoreCaseFilter;
 public class TestBsp2 {
 
 	public static void main(String[] args) {
+		Logger.setLoglevel(Loglevel.INFO);
 		TestBsp2.testContainer();
 		TestBsp2.testTree();
 		TestBsp2.generateCustomTree();
+		Container<String> client = new Container<String>();
+		Container<String> server = new Container<String>();
+		Container<String> server1 = new Container<String>();
+		try {
+			(new Thread(new ContainerServer(server1, 5004, "Server2"))).start();
+			(new Thread(new ContainerServer(server, 5003, 5004, "Server1"))).start();
+			(new Thread(new ContainerClient(client, 5003, "Client1"))).start();
+			
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		
 	}
 
 	@SuppressWarnings("unused")

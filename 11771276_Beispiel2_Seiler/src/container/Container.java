@@ -81,10 +81,10 @@ public class Container<E> implements ISearchableByFilter<E>, Collection<E> {
 		if (this.firstElement == null) return false;
 		IContainerElement<E> check = (IContainerElement<E>) arg0;
 		IContainerElement<E> last = this.firstElement;
-		if (last.equals(check)) return true;
+		if (last.getData().equals(check.getClass())) return true;
 		while (last.hasNextElement()) {
 			last = last.getNextElement();
-			if (last.equals(check)) return true;
+			if (last.getData().equals(check.getData())) return true;
 		}
 		return false;
 	}
@@ -142,7 +142,7 @@ public class Container<E> implements ISearchableByFilter<E>, Collection<E> {
 		IContainerElement<E> check = (IContainerElement<E>) arg0;
 		if (!this.contains(check)) return false;
 		IContainerElement<E> last = this.firstElement;
-		if (last.equals(check)) {
+		if (last.getData().equals(check.getData())) {
 			this.firstElement = last.getNextElement();
 			return true;
 		}
@@ -152,7 +152,7 @@ public class Container<E> implements ISearchableByFilter<E>, Collection<E> {
 			// copy the next element on a temporary var
 			IContainerElement<E> tmp = last.getNextElement();
 			// check if the temporary (the next one) equals the to-be-checked-one
-			if (tmp.equals(check)) {
+			if (tmp.getData().equals(check.getData())) {
 				// if so, set the reference to the next element of the current one to the next element of the temporary (next one) 
 				// so it gets skipped
 				last.setNextElement(tmp.getNextElement());
