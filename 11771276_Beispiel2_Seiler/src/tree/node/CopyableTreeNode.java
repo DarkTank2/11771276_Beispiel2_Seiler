@@ -26,7 +26,7 @@ public class CopyableTreeNode<NODETYPE extends IDeepCopy> extends GenericTreeNod
 	public CopyableTreeNode<NODETYPE> deepCopy() {
 		CopyableTreeNode<NODETYPE> retVal = new CopyableTreeNode<NODETYPE>((NODETYPE) this.nodeValue().deepCopy(), this.getLabel());
 		Collection<ITreeNode<NODETYPE>> l = retVal.getChildren();
-		this.getChildren().parallelStream().forEach(el -> l.add(el.deepCopy()));
+		this.getChildren().stream().forEach(el -> l.add(el.deepCopy()));
 		return retVal;
 	}
 }

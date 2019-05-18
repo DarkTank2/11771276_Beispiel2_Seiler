@@ -1,0 +1,25 @@
+2019-05-18T13:09:12.302 | INFO | LOGGER | Changed Log-Level to INFO
+2019-05-18T13:10:26.128 | INFO | Server2 | [start] started thread
+2019-05-18T13:10:26.135 | INFO | Server2 | Successfully connected to /127.0.0.1:5004
+2019-05-18T13:10:26.136 | INFO | Server1 | [start] started thread
+2019-05-18T13:10:26.150 | INFO | Client1 | [start] started thread
+2019-05-18T13:10:26.151 | INFO | Server1 | Successfully connected to /127.0.0.1:5003
+2019-05-18T13:10:47.103 | INFO | Client1 | [cmd-add] adding data: testing
+2019-05-18T13:10:47.103 | DEBUG | Client1 | [cmd-add] success
+2019-05-18T13:10:47.104 | INFO | Server1 | [cmd-add] Adding data: testing
+2019-05-18T13:10:52.658 | DEBUG | Server1 | [cmd-add] success
+2019-05-18T13:10:52.659 | INFO | Server2 | [cmd-add] Adding data: testing
+2019-05-18T13:10:53.369 | DEBUG | Server2 | [cmd-add] success
+2019-05-18T13:10:53.369 | TRACE | Server1 | Receiving value: [Server2-add] success
+2019-05-18T13:10:53.370 | INFO | Client1 | Answer is: [Server1-add] success |  [Server2-add] success
+2019-05-18T13:10:53.370 | INFO | Client1 | [cmd-print]
+2019-05-18T13:10:53.370 | TRACE | Server1 | Receiving value: [Server2-printed]
+2019-05-18T13:10:53.370 | INFO | Client1 | Answer is: [Server1-printed] | [Server2-printed]
+2019-05-18T13:11:03.839 | INFO | Client1 | [cmd-exit]
+2019-05-18T13:11:03.839 | INFO | Server1 | exiting
+2019-05-18T13:11:03.839 | INFO | Server2 | exiting
+2019-05-18T13:11:03.840 | TRACE | Server1 | Receiving value: [Server2-exited]
+2019-05-18T13:11:03.840 | INFO | Client1 | Answer is: [Server1-exited] | [Server2-exited]
+2019-05-18T13:11:03.840 | INFO | Client1 | [close] all sockets closed
+2019-05-18T13:11:03.840 | INFO | Server2 | [close] all sockets closed
+2019-05-18T13:11:03.840 | INFO | Server1 | [close] all sockets closed

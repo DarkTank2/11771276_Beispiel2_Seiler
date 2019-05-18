@@ -42,8 +42,8 @@ public class TestBsp2 {
 
 	public static void main(String[] args) {
 		Logger.setLoglevel(Loglevel.INFO);
-		TestBsp2.testContainer();
-		TestBsp2.testTree();
+//		TestBsp2.testContainer();
+//		TestBsp2.testTree();
 		TestBsp2.generateCustomTree();
 		Container<String> client = new Container<String>();
 		Container<String> server = new Container<String>();
@@ -339,5 +339,8 @@ public class TestBsp2 {
 		l.add(node44);
 		
 		System.out.println(tree.generateConsoleView("  "));
+		
+		GenericTree<String> treeCopy = (GenericTree<String>) tree.deepCopy();
+		System.out.println(treeCopy.generateConsoleView("  "));
 	}
 }

@@ -11,13 +11,14 @@ import java.util.List;
 import java.util.Vector;
 import java.util.stream.Collectors;
 
+import container.Container;
 import util.searchable.ISearchFilter;
 
 public class GenericTreeNode<NODETYPE> implements ITreeNode<NODETYPE> {
 
 	private NODETYPE nodeValue;
 	private String label;
-	private List<ITreeNode<NODETYPE>> children;
+	private Collection<ITreeNode<NODETYPE>> children;
 	
 	/**
 	 * Constructor for class GenericTreeNode.java
@@ -28,7 +29,7 @@ public class GenericTreeNode<NODETYPE> implements ITreeNode<NODETYPE> {
 	public GenericTreeNode(NODETYPE nodeValue, String label) {
 		this.nodeValue = nodeValue;
 		this.label = label;
-		this.children = new Vector<ITreeNode<NODETYPE>>();
+		this.children = new Container<ITreeNode<NODETYPE>>();
 	}
 
 	/* (non-Javadoc)
@@ -40,7 +41,7 @@ public class GenericTreeNode<NODETYPE> implements ITreeNode<NODETYPE> {
 		if (filter == null) return null;
 		if (!(compareObject instanceof ITreeNode<?>)) return null;
 //		create new collection
-		Collection<ITreeNode<NODETYPE>> retVal = new Vector<ITreeNode<NODETYPE>>();
+		Collection<ITreeNode<NODETYPE>> retVal = new Container<ITreeNode<NODETYPE>>();
 //		add this if it compares successful against the compareObject
 		if (filter.searchFilterFunction(this, compareObject)) retVal.add(this);
 		if (this.children == null) return retVal;
