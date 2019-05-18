@@ -50,7 +50,7 @@ public class GenericTreeNode<NODETYPE> implements ITreeNode<NODETYPE> {
 			retVal.addAll(((GenericTreeNode<NODETYPE>) el).searchByFilter(filter, compareObject));
 		});
 //		some childs may return null, so filter them out
-		retVal.parallelStream().filter(el -> el != null);
+		retVal.stream().filter(el -> el != null);
 		return retVal;
 	}
 

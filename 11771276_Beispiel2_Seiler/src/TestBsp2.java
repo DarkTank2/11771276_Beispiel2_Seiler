@@ -342,5 +342,9 @@ public class TestBsp2 {
 		
 		GenericTree<String> treeCopy = (GenericTree<String>) tree.deepCopy();
 		System.out.println(treeCopy.generateConsoleView("  "));
+		System.out.println(tree.findNode("Corgi <3").toString());
+		System.out.println(tree.findNode(node44).toString());
+		Collection<ITreeNode<String>> list = tree.searchByFilter(new TextSearchIgnoreCaseFilter(), new GenericTreeNode<String>("fIsch", "chiLd1"));
+		System.out.println(list.toString());
 	}
 }
