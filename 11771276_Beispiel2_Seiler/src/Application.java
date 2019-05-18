@@ -1,5 +1,5 @@
 /**
- * Filename: TestBsp2.java
+ * Filename: Application.java
  * Description: 
  * @author Alexander Seiler, 11771276
  * @since 17.05.2019
@@ -38,13 +38,13 @@ import utils.Loglevel;
  * The behavior of the methods is not tested and has to be tested separately.
  *
  */
-public class TestBsp2 {
+public class Application {
 
 	public static void main(String[] args) {
 		Logger.setLoglevel(Loglevel.INFO);
-//		TestBsp2.testContainer();
-//		TestBsp2.testTree();
-		TestBsp2.generateCustomTree();
+//		Application.testContainer();
+//		Application.testTree();
+		Application.generateCustomTree();
 		Container<String> client = new Container<String>();
 		Container<String> server = new Container<String>();
 		Container<String> server1 = new Container<String>();
@@ -110,7 +110,7 @@ public class TestBsp2 {
 		// All methods call in this method should not yield any compile errors
 
 		// Products
-		CompositeProduct compositeProduct = TestBsp2.generateCompositeProduct();
+		CompositeProduct compositeProduct = Application.generateCompositeProduct();
 		compositeProduct.removeProduct(null);
 		IDeepCopy copyCompositeProduct = compositeProduct.deepCopy();
 
